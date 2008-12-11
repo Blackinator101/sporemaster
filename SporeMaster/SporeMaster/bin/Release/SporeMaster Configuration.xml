@@ -8,6 +8,6 @@
     <Extension>locale</Extension>
     <Extension>prop.xml</Extension>
   </FullTextIndexExtensions>
-  <WinMerge>release\WinMerge\WinMergeU.exe</WinMerge>
+  <WinMerge>WinMerge\WinMergeU.exe</WinMerge>
   <UnpackedFolderFormat>{1}.unpacked</UnpackedFolderFormat>
 </SporeMasterConfig>
