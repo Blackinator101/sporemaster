@@ -2,8 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:VTreeView="clr-namespace:VTreeView;assembly=VTreeView" 
-        xmlns:ICSharpDevelop="clr-namespace:ICSharpCode.TextEditor;assembly=ICSharpCode.TextEditor"
-        xmlns:wfi="clr-namespace:System.Windows.Forms.Integration;assembly=WindowsFormsIntegration"
+        xmlns:local="clr-namespace:SporeMaster"
         Width="700" Height="434"
         IsVisibleChanged="UserControl_IsVisibleChanged"
         >
@@ -82,13 +81,28 @@
                     <Button Name="SelectedFile_ExploreRight" Click="SelectedFile_Explorer_Click"  >Explore Right</Button>
                 </ToolBar>
             </Grid>
-            <wfi:WindowsFormsHost x:Name="EditorHost" Grid.Column="2" Margin="6,67,6,6">
-                <ICSharpDevelop:TextEditorControl x:Name="Editor">
-                </ICSharpDevelop:TextEditorControl>
-            </wfi:WindowsFormsHost>
+            <TabControl Grid.Column="2" Margin="6,67,6,6">
+                <TabControl.Template>
+                    <ControlTemplate TargetType="{x:Type TabControl}">
+                        <Grid KeyboardNavigation.TabNavigation="Local">
+                            <TabPanel Name="HeaderPanel" Visibility="Hidden" IsItemsHost="True"/>
+                            <ContentPresenter Name="PART_SelectedContentHost" Margin="0" ContentSource="SelectedContent" />
+                        </Grid>
+                    </ControlTemplate>
+                </TabControl.Template>
+                <TabItem Name="TabTextEditor" Header="Text" >
+                    <local:EditorText x:Name="TextEditor" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                </TabItem>
+                <TabItem Name="TabImageEditor" Header="Image" >
+                    <local:EditorImage x:Name="ImageEditor" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                </TabItem>
+                <TabItem Name="TabModelEditor" Header="Model" >
+                    <local:EditorModel x:Name="ModelEditor" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                </TabItem>
+            </TabControl>
         </Grid>
         <TextBox Height="23" Margin="5,6,35,0" Name="FileSearch" VerticalAlignment="Top" TextChanged="FileSearch_TextChanged" />
-        <Image HorizontalAlignment="Right" Margin="0,6,6,0" Name="image1" Stretch="Fill" Width="23" Height="23" VerticalAlignment="Top" Source="icons/Find.png" />
+        <Image HorizontalAlignment="Right" Margin="0,6,6,0" Stretch="Fill" Width="23" Height="23" VerticalAlignment="Top" Source="icons/Find.png" />
         <CheckBox Height="16" HorizontalAlignment="Left" Margin="16,37,0,0" Name="ShowRightOnly" VerticalAlignment="Top" Width="148" Checked="ShowRightOnly_Changed" Unchecked="ShowRightOnly_Changed">Show only modded files</CheckBox>
     </Grid>
 </UserControl>
