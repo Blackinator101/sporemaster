@@ -33,7 +33,7 @@
                     Packing of .rw4 (RenderWare 4) model and texture files (from OGRE3D XML format 
                     and DDS format respectively) with packages, making part creation possible 
                     for the first time.  Unpacking of these files is currently very limited.
-                    Mesh animations are not yet supported.
+                    Part animations are not yet supported.
                 </Paragraph>
             </ListItem>
             <ListItem>
@@ -112,8 +112,7 @@
             them are in any way responsible for any problems you have with SporeMaster!
         </Paragraph>
         <Paragraph>
-            I intend to release the code for SporeMaster under an unrestrictive license such as BSD, once I clean it up
-            and find it a home.</Paragraph>
+            <Span Foreground="Red">NEW:</Span>SporeMaster's source code is available (under a BSD license) from http://code.google.com/p/sporemaster/</Paragraph>
         <Paragraph>
             Please post comments, suggestions, bug reports and discovered hashes (from reg_file.txt) in the Modding Discussion forum at www.sporemods.org.  
             I have no affiliation with that site; I just don't want to publish my e-mail address.  Again, do not expect any support for this software.</Paragraph>
