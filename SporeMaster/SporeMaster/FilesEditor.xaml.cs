@@ -29,13 +29,13 @@ namespace SporeMaster
         private DirectoryTree files = DirectoryTree.Tree;
         private DirectoryTreeWatcher[] watcher = new DirectoryTreeWatcher[2];
         private DirectoryTree lastSelectedFile = null;
-        private string editing;
-        private int editorSaveUndoCount = 0;
 
         private string[] _Path = new string[2];
         private string LeftPath { get { return _Path[0]; } }
         private string RightPath { get { return _Path[1]; } }
         private Window Window { get { return MainWindow.Instance; } }
+
+        IEditor currentEditor;
 
         public FilesEditor()
         {
@@ -43,14 +43,8 @@ namespace SporeMaster
 
             if (LicenseManager.UsageMode != LicenseUsageMode.Designtime)
             {
-                this.Width = double.NaN; ;
-                this.Height = double.NaN; ;
-
-                Editor.Document.HighlightingStrategy = ICSharpCode.TextEditor.Document.HighlightingStrategyFactory.CreateHighlightingStrategyForFile("foo.xml");
-                Editor.IndentStyle = ICSharpCode.TextEditor.Document.IndentStyle.Smart;
-                Editor.TabIndent = 2;
-                Editor.Document.TextEditorProperties.IndentationSize = 2;
-                Editor.ConvertTabsToSpaces = true;
+                this.Width = double.NaN;
+                this.Height = double.NaN;
             }
         }
 
@@ -71,10 +65,9 @@ namespace SporeMaster
 
         public string GetEditorSelection()
         {
-            if (!Editor.ActiveTextAreaControl.SelectionManager.HasSomethingSelected)
-                return null;
-            return Editor.ActiveTextAreaControl.SelectionManager.SelectedText;
+            return currentEditor==null ? "" : currentEditor.GetSelectedText();
         }
+
 
         void update() {
             files.Search(FileSearch.Text);
@@ -113,6 +106,29 @@ namespace SporeMaster
             update();
         }
 
+        private void editDocument(string path, bool read_only)
+        {
+            // Select an editor
+            if (path != null && path.EndsWith(".png"))
+            {
+                currentEditor = ImageEditor;
+                TabImageEditor.IsSelected = true;
+            }
+            else if (path != null && path.EndsWith(".rw4\\") && File.Exists(path + "model.mesh.xml"))
+            {
+                currentEditor = ModelEditor;
+                TabModelEditor.IsSelected = true;
+            }
+            else
+            {
+                currentEditor = TextEditor;
+                TabTextEditor.IsSelected = true;
+            }
+
+            currentEditor.Open(path, read_only);
+            updateEditorSearch();
+        }
+
         private void Tree_SelectedItemChanged(object sender, SelectionChangedEventArgs e)
         {
             var s = (sender as VTreeView.VTreeView).SelectedItem as DirectoryTree;
@@ -127,18 +143,19 @@ namespace SporeMaster
                 SelectedFile_ExploreLeft.IsEnabled = f.LeftPresent;
                 SelectedFile_ExploreRight.IsEnabled = f.RightPresent;
                 SelectedFile_Save.IsEnabled = false;
-                if (s.IsFolder || (!s.LeftPresent && !s.RightPresent))
+                if (!s.LeftPresent && !s.RightPresent)
                 {
                     editDocument(null, true);
                 }
                 else if (s.RightPresent)
                 {
-                    editDocument(this.RightPath + "\\" + s.Path, false);
+                    editDocument(this.RightPath + "\\" + s.Path + (s.IsFolder?"\\":""), false);
                 }
                 else
                 {
-                    editDocument(this.LeftPath + "\\" + s.Path, true);
-                    SelectedFile_Save.IsEnabled = true;
+                    editDocument(this.LeftPath + "\\" + s.Path + (s.IsFolder ? "\\" : ""), true);
+                    if (!s.IsFolder)
+                        SelectedFile_Save.IsEnabled = true;
                 }
                 DirTree.ScrollIntoView(s);
             }
@@ -150,89 +167,15 @@ namespace SporeMaster
             }
         }
 
-        void editDocument( string path, bool read_only ) {
-            if (editing != path)
-            {
-                editorSave();
-                editing = null;
-                Editor.Document.UndoStack.ClearAll();
-                editorSaveUndoCount = Editor.Document.UndoStack.UndoItemCount;
-
-                if (path != null)
-                {
-                    try
-                    {
-                        Editor.Document.TextContent = File.ReadAllText(path);
-                    }
-                    catch (Exception exc)
-                    {
-                        Editor.Document.TextContent = "Unable to load file: " + path + ".\n\n" + exc.ToString();
-                        Editor.IsReadOnly = true;
-                        Editor.BackColor = System.Drawing.Color.Yellow;
-                        Editor.Refresh();
-                        return;
-                    }
-                    if (!read_only) editing = path;
-                }
-                else
-                    Editor.Document.TextContent = "";
-
-                updateEditorSearch();
-
-                Editor.Refresh();
-            }
-            Editor.IsReadOnly = read_only;
-            Editor.BackColor = read_only ? System.Drawing.Color.LightGray : System.Drawing.Color.White;
-        }
-
-        void editorSave()
-        {
-            if (editing != null && Editor.Document.UndoStack.UndoItemCount != editorSaveUndoCount)
-            {
-                editorSaveUndoCount = Editor.Document.UndoStack.UndoItemCount;
-                File.WriteAllText(editing, Editor.Document.TextContent);
-            }
-        }
-
         void updateEditorSearch()
         {
             string search = FileSearch.Text.ToLowerInvariant();
-            Editor.Document.MarkerStrategy.RemoveAll(new Predicate<ICSharpCode.TextEditor.Document.TextMarker>(delegate { return true; }));
-            if (search != "" && Editor.Document.TextLength != 0)
-            {
-                bool anyvisible = false;
-                string lower = Editor.Document.TextContent.ToLowerInvariant();
-                int pos = 0;
-                int firstmatch_row = -1, firstmatch_column = -1;
-                var view = Editor.ActiveTextAreaControl.TextArea.TextView;
-                int topRow = view.FirstVisibleLine;
-                int bottomRow = topRow + view.VisibleLineCount;
-                int leftColumn = Editor.ActiveTextAreaControl.HScrollBar.Value - Editor.ActiveTextAreaControl.HScrollBar.Minimum;
-                int rightColumn = leftColumn + view.VisibleColumnCount;
-
-                while ((pos = lower.IndexOf(search, pos)) != -1)
-                {
-                    Editor.Document.MarkerStrategy.AddMarker(new ICSharpCode.TextEditor.Document.TextMarker(
-                        pos, search.Length, ICSharpCode.TextEditor.Document.TextMarkerType.SolidBlock,
-                        System.Drawing.Color.Red, System.Drawing.Color.White));
-                    if (!anyvisible)
-                    {
-                        int line = Editor.Document.GetLineNumberForOffset(pos);
-                        int col = pos - Editor.Document.GetLineSegmentForOffset(pos).Offset;
-                        if (firstmatch_row < 0) { firstmatch_row = line; firstmatch_column = col; }
-                        anyvisible = (line >= topRow && line < bottomRow && col >= leftColumn && col < rightColumn);
-                    }
-                    pos += search.Length;
-                }
-                if (!anyvisible && firstmatch_row >= 0)
-                    Editor.ActiveTextAreaControl.ScrollTo(firstmatch_row, firstmatch_column);
-            }
-            Editor.Refresh();
+            if (currentEditor != null) currentEditor.Search(search);
         }
 
         void SelectedFile_Open_Click(object sender, RoutedEventArgs e)
         {
-            editorSave();
+            if (currentEditor != null) currentEditor.Save();
             var n = (DirTree.SelectedItem as DirectoryTree);
             var l = watcher[0].Path + "\\" + n.Path;
             var r = watcher[1].Path + "\\" + n.Path;
@@ -249,11 +192,8 @@ namespace SporeMaster
 
         void SelectedFile_Save_Click(object sender, RoutedEventArgs e)
         {
-            if (editing != null)
-            {
-                editorSave();
-                return;
-            }
+            if (currentEditor != null) currentEditor.Save();
+
             var n = (DirTree.SelectedItem as DirectoryTree);
             if (n.LeftPresent && !n.RightPresent && !n.IsFolder)
             {
@@ -289,7 +229,7 @@ namespace SporeMaster
 
         void SelectedFile_Explorer_Click(object sender, RoutedEventArgs e)
         {
-            editorSave();
+            if (currentEditor != null) currentEditor.Save();
             var n = (DirTree.SelectedItem as DirectoryTree);
             int side = (sender == SelectedFile_ExploreLeft) ? 0 : 1;
             var p = watcher[side].Path + "\\" + n.Path;
@@ -337,7 +277,7 @@ namespace SporeMaster
         private void UserControl_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             update();
-            editorSave();
+            if (currentEditor != null) currentEditor.Save();
         }
     }
 }
