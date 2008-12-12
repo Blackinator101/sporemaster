@@ -9644,3 +9644,6 @@ auto_creature_parts~_2ce_details_glasses
 texture
 solid_black
 old_model
+dialogboxes~	0x490F6945
+testmodel
+testmodels~	0x44A7F6AF
