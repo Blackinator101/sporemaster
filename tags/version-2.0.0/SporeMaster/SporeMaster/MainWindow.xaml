@@ -1,0 +1,76 @@
+﻿<Window x:Class="SporeMaster.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:SporeMaster"
+    Title="SporeMaster" Height="600" Width="1024">
+    <Window.Resources>
+        <!--
+        <ControlTemplate x:Key="DirTreeTemplate" TargetType="{x:Type VTreeView:VTreeView}">
+            <Border x:Name="Bd" SnapsToDevicePixels="true" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="1">
+                <ScrollViewer Padding="{TemplateBinding Padding}" Focusable="false" CanContentScroll="False">
+                    <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                </ScrollViewer>
+            </Border>
+        </ControlTemplate>
+        -->
+        
+    </Window.Resources>
+    
+    <Grid>
+        <TabControl Name="tabControl" SelectionChanged="tabControl_SelectionChanged">
+            <TabItem Header="Spore Packages" Name="packages">
+                <Grid HorizontalAlignment="Stretch">
+                    <TextBlock Height="54" Margin="6,6,6,0" VerticalAlignment="Top" TextWrapping="Wrap">
+                        Before you can mod Spore, you need to unpack some of Spore's .package files so that you have something to study and work with.  The below list
+                        is the recommended set of files to unpack, but SporeMaster doesn't know where to find them in Spore's Data folder.  Select each file, click
+                        Change, and locate it; then click Unpack.  Advanced users can change and reorder the set of packages.
+                    </TextBlock>
+                    <Grid Margin="0,66,0,0">
+                        <ListView Margin="6,35.04,6,61" Name="PackageList" SelectionMode="Single" SelectionChanged="PackageList_SelectionChanged">
+                            <ListViewItem>Spore_Game.package</ListViewItem>
+                            <ListViewItem>Text.package</ListViewItem>
+                        </ListView>
+                        <Button Height="23" Margin="6,6,0,0"    Name="Btn_NewPackage"     VerticalAlignment="Top" HorizontalAlignment="Left" Width="100" Click="Btn_NewPackage_Click">New</Button>
+                        <Button Height="23" Margin="112,6,0,0"   Name="Btn_EditPackage"   VerticalAlignment="Top" HorizontalAlignment="Left" Width="100" IsEnabled="False" Click="Btn_EditPackage_Click">Change</Button>
+                        <Button Height="23" Margin="218,6,136,0" Name="Btn_RemovePackage" VerticalAlignment="Top" HorizontalAlignment="Left" Width="100" IsEnabled="False" Click="Btn_RemovePackage_Click">Remove</Button>
+                        <Button Height="23" Margin="157,0,161,6" Name="Btn_Unpack" VerticalAlignment="Bottom" Click="Btn_Unpack_Click">Unpack</Button>
+                        <Button Height="23" HorizontalAlignment="Right" Margin="0,6,62,0" Name="Btn_PackageUp" VerticalAlignment="Top" Width="50" IsEnabled="False" Click="Btn_PackageUp_Click">Up</Button>
+                        <Button Height="23" HorizontalAlignment="Right" Margin="0,6,6,0" Name="Btn_PackageDown" VerticalAlignment="Top" Width="50" IsEnabled="False" Click="Btn_PackageDown_Click">Down</Button>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Mod" Name="EditMod">
+                <Grid>
+                    <GroupBox Header="Select Mod to Edit" Margin="6,6,6,0" Name="groupBox1" Height="58" VerticalAlignment="Top">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="177*" />
+                                <ColumnDefinition Width="253*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Height="23" Margin="6,6,141,0" Name="ModPath" VerticalAlignment="Top" Grid.ColumnSpan="2" />
+                            <Button Margin="0,6,70,0" Name="NewMod" HorizontalAlignment="Right" Width="65" Height="23" VerticalAlignment="Top" Grid.Column="1" Click="NewMod_Click">Create</Button>
+                            <Button HorizontalAlignment="Right" Margin="0,6,6,0" Name="OpenMod" Width="58" Click="OpenMod_Click" Height="23" VerticalAlignment="Top" Grid.Column="1">Open</Button>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Margin="5,70,6,6" Header="Mod Operations">
+                        <Grid>
+                            <Button HorizontalAlignment="Left" VerticalAlignment="Top" Margin="7,6,0,0" Name="Unpack_Mod" Height="23" Width="75" Click="Unpack_Mod_Click" IsEnabled="False">Unpack</Button>
+                            <Button Height="23" HorizontalAlignment="Left" Margin="7,35,0,0" Name="Pack_Mod" VerticalAlignment="Top" Width="75" Click="Pack_Mod_Click" IsEnabled="False">Pack</Button>
+                            <TextBlock Height="21" Margin="88,6,6,0" Name="Unpack_Mod_Doc" VerticalAlignment="Top" />
+                            <TextBlock Height="21" Margin="88,37,6,0" Name="Pack_Mod_Doc" VerticalAlignment="Top" />
+                        </Grid>
+                    </GroupBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Files" Name="TabFilesEditor" IsEnabled="False">
+                <local:FilesEditor x:Name="FilesEditor"/>
+            </TabItem>
+            <TabItem Header="Names" Name="NamesTab">
+                <local:NameEditor x:Name="NameEditor" HorizontalAlignment="Stretch"/>
+            </TabItem>
+            <TabItem Header="About" Name="AboutTab">
+                <FlowDocumentPageViewer Margin="6,6,6,6" Document="{StaticResource AboutSporeMaster}" />
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

@@ -1,0 +1,108 @@
+﻿<UserControl x:Class="SporeMaster.FilesEditor"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:VTreeView="clr-namespace:VTreeView;assembly=VTreeView" 
+        xmlns:local="clr-namespace:SporeMaster"
+        Width="700" Height="434"
+        IsVisibleChanged="UserControl_IsVisibleChanged"
+        >
+    <Grid>
+        <Grid Margin="0,60,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="270*" />
+                <ColumnDefinition Width="270*" />
+                <ColumnDefinition Width="450*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="400*"/>
+                <!-- <RowDefinition Height="100"/> -->
+            </Grid.RowDefinitions>
+            <VTreeView:VTreeView x:Name="DirTree" Margin="6,6,10,6" 
+                                             SelectionChanged="Tree_SelectedItemChanged"
+                                             ScrollViewer.HorizontalScrollBarVisibility="Disabled" Grid.ColumnSpan="2"
+                                             Keyboard.PreviewKeyDown="DirTree_KeyDown"
+                                             >
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type ListBoxItem} }, Path=ActualWidth}" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="250*" />
+                                <ColumnDefinition Width="250*" />
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Orientation="Horizontal" Grid.Column="0">
+                                <VTreeView:RowExpander/>
+                                <Image Name="LIcon" Height="16" />
+                                <TextBlock Name="LTextBlock" Text="{Binding Path=FullName}" Foreground="{Binding Path=LeftBrush}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Grid.Column="1">
+                                <VTreeView:RowExpander/>
+                                <Image Name="RIcon" Height="16" Width="16" />
+                                <TextBlock Name="RTextBlock" Text="{Binding Path=FullName}" Foreground="{Binding Path=RightBrush}"/>
+                            </StackPanel>
+                        </Grid>
+                        <DataTemplate.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsFolder}" Value="True"/>
+                                    <Condition Binding="{Binding IsExpanded}" Value="False"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter TargetName="LIcon" Property="Source" Value="icons/Folder-close.png"/>
+                                <Setter TargetName="RIcon" Property="Source" Value="icons/Folder-close.png"/>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding IsFolder}" Value="True"/>
+                                    <Condition Binding="{Binding IsExpanded}" Value="True"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter TargetName="LIcon" Property="Source" Value="icons/Folder.png"/>
+                                <Setter TargetName="RIcon" Property="Source" Value="icons/Folder.png"/>
+                            </MultiDataTrigger>
+                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorLevel=1, AncestorType={x:Type ListBoxItem} }, Path=IsSelected}"
+                                                 Value="True">
+                                <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" TargetName="LTextBlock" />
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" TargetName="LTextBlock" />
+                                <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" TargetName="RTextBlock" />
+                                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" TargetName="RTextBlock" />
+                            </DataTrigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </VTreeView:VTreeView>
+
+            <GridSplitter Grid.Column="1" Grid.RowSpan="2" Width="4" />
+
+            <Grid Name="SelectedFilePanel" Grid.Column="2" IsEnabled="False" Height="61" VerticalAlignment="Top">
+                <TextBlock Height="21" Margin="6,6,6,0" Name="SelectedFileLabel" VerticalAlignment="Top" />
+                <ToolBar ToolBarTray.IsLocked="True" Height="26" HorizontalAlignment="Stretch" Margin="6,6,6,0" VerticalAlignment="Bottom">
+                    <Button Name="SelectedFile_Open" Click="SelectedFile_Open_Click">WinMerge</Button>
+                    <Button Name="SelectedFile_Save" Click="SelectedFile_Save_Click" >Modify</Button>
+                    <Button Name="SelectedFile_Erase" Click="SelectedFile_Erase_Click" >Erase Mod</Button>
+                    <Button Name="SelectedFile_ExploreLeft" Click="SelectedFile_Explorer_Click" >Explore Left</Button>
+                    <Button Name="SelectedFile_ExploreRight" Click="SelectedFile_Explorer_Click"  >Explore Right</Button>
+                </ToolBar>
+            </Grid>
+            <TabControl Grid.Column="2" Margin="6,67,6,6">
+                <TabControl.Template>
+                    <ControlTemplate TargetType="{x:Type TabControl}">
+                        <Grid KeyboardNavigation.TabNavigation="Local">
+                            <TabPanel Name="HeaderPanel" Visibility="Hidden" IsItemsHost="True"/>
+                            <ContentPresenter Name="PART_SelectedContentHost" Margin="0" ContentSource="SelectedContent" />
+                        </Grid>
+                    </ControlTemplate>
+                </TabControl.Template>
+                <TabItem Name="TabTextEditor" Header="Text" >
+                    <local:EditorText x:Name="TextEditor" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                </TabItem>
+                <TabItem Name="TabImageEditor" Header="Image" >
+                    <local:EditorImage x:Name="ImageEditor" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                </TabItem>
+                <TabItem Name="TabModelEditor" Header="Model" >
+                    <local:EditorModel x:Name="ModelEditor" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+                </TabItem>
+            </TabControl>
+        </Grid>
+        <TextBox Height="23" Margin="5,6,35,0" Name="FileSearch" VerticalAlignment="Top" TextChanged="FileSearch_TextChanged" />
+        <Image HorizontalAlignment="Right" Margin="0,6,6,0" Stretch="Fill" Width="23" Height="23" VerticalAlignment="Top" Source="icons/Find.png" />
+        <CheckBox Height="16" HorizontalAlignment="Left" Margin="16,37,0,0" Name="ShowRightOnly" VerticalAlignment="Top" Width="148" Checked="ShowRightOnly_Changed" Unchecked="ShowRightOnly_Changed">Show only modded files</CheckBox>
+    </Grid>
+</UserControl>

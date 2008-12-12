@@ -1,0 +1,146 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:VTreeView">
+    
+    <local:ConvertLevelToIndent x:Key="ConvertLevelToIndent" />
+
+    <Style x:Key="ExpandCollapseToggleStyle" TargetType="{x:Type ToggleButton}">
+        <Setter Property="Focusable" Value="False"/>
+        <Setter Property="Width" Value="16"/>
+        <Setter Property="Height" Value="16"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Border Width="16" Height="16" Background="Transparent" Padding="5,5,5,5">
+                        <Path x:Name="ExpandPath" Fill="Transparent" Stroke="#FF989898" Data="M0,0 L0,6 L6,0 z">
+                            <Path.RenderTransform>
+                                <RotateTransform Angle="135" CenterX="3" CenterY="3"/>
+                            </Path.RenderTransform>
+                        </Path>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="ExpandPath" Property="Stroke" Value="#FF1BBBFA"/>
+                            <Setter TargetName="ExpandPath" Property="Fill" Value="Transparent"/>
+                        </Trigger>
+
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="ExpandPath" Property="RenderTransform">
+                                <Setter.Value>
+                                    <RotateTransform Angle="180" CenterX="3" CenterY="3"/>
+                                </Setter.Value>
+                            </Setter>
+                            <Setter TargetName="ExpandPath" Property="Fill" Value="#FF595959"/>
+                            <Setter TargetName="ExpandPath" Property="Stroke" Value="#FF262626"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+  <SolidColorBrush x:Key="ListBorder" Color="#828790"/>
+
+
+    <Style TargetType="{x:Type local:VTreeView}">
+
+      <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
+      <Setter Property="BorderBrush" Value="{StaticResource ListBorder}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+      <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
+      <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
+      <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
+      <Setter Property="VerticalContentAlignment" Value="Center"/>
+      
+        <Setter Property="Template">
+            <Setter.Value>
+
+                <ControlTemplate TargetType="{x:Type local:VTreeView}">
+                    <Border x:Name="Bd" SnapsToDevicePixels="true" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="1">
+                        <ScrollViewer Padding="{TemplateBinding Padding}" Focusable="false">
+                            <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </ScrollViewer>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                        </Trigger>
+                        <Trigger Property="IsGrouping" Value="true">
+                            <Setter Property="ScrollViewer.CanContentScroll" Value="false"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+
+  
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemTemplate">
+            <Setter.Value>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <local:RowExpander></local:RowExpander>
+                        <Grid x:Name="myGrid" Width="Auto" Height="Auto" >
+                            <TextBlock x:Name="myTextBlock" Text="{Binding Path=Name}" HorizontalAlignment="Left" Width="Auto" VerticalAlignment="Center" Margin="2,2,2,2" TextTrimming="CharacterEllipsis" />
+				        </Grid>
+                    </StackPanel>
+                    <DataTemplate.Triggers>
+<!--                        <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ListBoxItem}, AncestorLevel=1}, Path=IsSelected}" Value="True">
+                            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" TargetName="myGrid" />
+                            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.HighlightTextBrushKey}}" TargetName="myTextBlock" />
+                        </DataTrigger>  -->
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemContainerStyle">
+            <Setter.Value>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="HorizontalContentAlignment" Value="{Binding Path=HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                    <Setter Property="VerticalContentAlignment" Value="{Binding Path=VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}"/>
+                    <Setter Property="Padding" Value="2,0,0,0"/>
+                    <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                <Border x:Name="Bd" SnapsToDevicePixels="true" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}">
+                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel VirtualizationMode="Recycling" IsItemsHost="True"/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type local:RowExpander}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:RowExpander}">
+                    <ToggleButton x:Name="tb" ClickMode="Press" 
+                                  IsChecked="{Binding Path=IsExpanded}" 
+                                  Style="{StaticResource ExpandCollapseToggleStyle}" 
+                                  Margin="{Binding Path=Level, Converter={StaticResource ConvertLevelToIndent}}"/>
+                    <ControlTemplate.Triggers>
+                        <DataTrigger Binding="{Binding Path=HasChildren}" Value="False">
+                            <Setter Property="Visibility" TargetName="tb" Value="Hidden"/>
+                        </DataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+</ResourceDictionary>

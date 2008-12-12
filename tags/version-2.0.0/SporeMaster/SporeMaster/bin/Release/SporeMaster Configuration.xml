@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<SporeMasterConfig>
+  <Packages>
+    <Package>SPORE_DATA_FOLDER\Spore_Game.package</Package>
+    <Package>SPORE_DATA_FOLDER\Text.package</Package>
+  </Packages>
+  <FullTextIndexExtensions>
+    <Extension>locale</Extension>
+    <Extension>prop.xml</Extension>
+  </FullTextIndexExtensions>
+  <WinMerge>WinMerge\WinMergeU.exe</WinMerge>
+  <UnpackedFolderFormat>{1}.unpacked</UnpackedFolderFormat>
+</SporeMasterConfig>

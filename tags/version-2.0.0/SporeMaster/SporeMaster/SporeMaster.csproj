@@ -1,0 +1,270 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{47D70385-030C-4B4C-968B-08E22E1BAD22}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SporeMaster</RootNamespace>
+    <AssemblyName>SporeMaster</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+    <TargetFrameworkSubset>Full</TargetFrameworkSubset>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="3DTools, Version=1.0.2614.20437, Culture=neutral, processorArchitecture=MSIL" />
+    <Reference Include="ICSharpCode.TextEditor, Version=3.0.0.3437, Culture=neutral, PublicKeyToken=4d61825e8dd49f1a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\ICSharpCode.TextEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="UIAutomationProvider">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="VTreeView, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\VTreeView\VTreeView\bin\Release\VTreeView.dll</HintPath>
+    </Reference>
+    <Reference Include="WindowsBase">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationCore">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="PresentationFramework">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsFormsIntegration">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="AboutSporeMaster.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditorImage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditorModel.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditorText.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="FilesEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="NameEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PleaseWait.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MainWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DirectoryTree.cs" />
+    <Compile Include="DirectoryTreeWatcher.cs" />
+    <Compile Include="EditorImage.xaml.cs">
+      <DependentUpon>EditorImage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditorModel.xaml.cs">
+      <DependentUpon>EditorModel.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditorText.xaml.cs">
+      <DependentUpon>EditorText.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FilesEditor.xaml.cs">
+      <DependentUpon>FilesEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FullTextIndex.cs" />
+    <Compile Include="Gibbed.Spore\Properties\ArrayProperty.cs" />
+    <Compile Include="Gibbed.Spore\Properties\ComplexProperty.cs" />
+    <Compile Include="Gibbed.Spore\Properties\Property.cs" />
+    <Compile Include="Gibbed.Spore\Properties\PropertyFile.cs" />
+    <Compile Include="Gibbed.Spore\Properties\Types\BoolProperty.cs" />
+    <Compile Include="Gibbed.Spore\Properties\Types\BoundingBoxProperty.cs" />
+    <Compile Include="Gibbed.Spore\Properties\Types\ColorRGBAProperty.cs" />
+    <Compile Include="Gibbed.Spore\Properties\Types\ColorRGBProperty.cs" />
+    <Compile Include="Gibbed.Spore\Properties\Types\FloatProperty.cs" />
+    <Compile Include="Gibbed.Spore\Properties\Types\Int32Property.cs" />
+    <Compile Include="Gibbed.Spore\Properties\Types\KeyProperty.cs" />
+    <Compile Include="Gibbed.Spore\Properties\Types\String16Property.cs" />
+    <Compile Include="Gibbed.Spore\Properties\Types\String8Property.cs" />
+    <Compile Include="Gibbed.Spore\Properties\Types\TextProperty.cs" />
+    <Compile Include="Gibbed.Spore\Properties\Types\TransformProperty.cs" />
+    <Compile Include="Gibbed.Spore\Properties\Types\UInt32Property.cs" />
+    <Compile Include="Gibbed.Spore\Properties\Types\Vector2Property.cs" />
+    <Compile Include="Gibbed.Spore\Properties\Types\Vector3Property.cs" />
+    <Compile Include="Gibbed.Spore\Properties\Types\Vector4Property.cs" />
+    <Compile Include="HashGuesser.cs" />
+    <Compile Include="IEditor.cs" />
+    <Compile Include="NameEditor.xaml.cs">
+      <DependentUpon>NameEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="NameRegistry.cs" />
+    <Compile Include="PackagePack.cs" />
+    <Compile Include="PackageUnpack.cs" />
+    <Compile Include="Gibbed.Spore\Helpers\ByteHelpers.cs" />
+    <Compile Include="Gibbed.Spore\Helpers\NumberHelpers.cs" />
+    <Compile Include="Gibbed.Spore\Helpers\StreamHelpers.cs" />
+    <Compile Include="Gibbed.Spore\Helpers\StringHelpers.cs" />
+    <Compile Include="Gibbed.Spore\Package\DatabasePackedFile.cs" />
+    <Compile Include="PleaseWait.xaml.cs">
+      <DependentUpon>PleaseWait.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="RebuildPropertyFile.cs" />
+    <Compile Include="Renamer.cs" />
+    <Compile Include="RenderWare4\ModelPack.cs" />
+    <Compile Include="RenderWare4\ModelUnpack.cs" />
+    <Compile Include="RenderWare4\OgreXmlReader.cs" />
+    <Compile Include="RenderWare4\OgreXmlWriter.cs" />
+    <Compile Include="RenderWare4\RW4Garbage.cs" />
+    <Compile Include="RenderWare4\RW4Model.cs" />
+    <Compile Include="SearchSpec.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\Defragmentation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\Find.png" />
+    <Resource Include="icons\Symbol-Construction.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icons\Folder-close.png" />
+    <Resource Include="icons\Folder.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
