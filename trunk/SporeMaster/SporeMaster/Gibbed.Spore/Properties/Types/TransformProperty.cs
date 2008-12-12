@@ -46,7 +46,7 @@ namespace Gibbed.Spore.Properties
                     this.Matrix[i] = float.Parse(s[i + 1]);
                 return;
             }
-            this.Flags = input.GetAttribute("Flags").GetHexNumber();
+            this.Flags = input.GetAttribute("flags").GetHexNumber();
             parseV(input.GetAttribute("pos"), out Matrix[0], out Matrix[1], out Matrix[2]);
             parseV(input.GetAttribute("vx"), out Matrix[3], out Matrix[6], out Matrix[9]);
             parseV(input.GetAttribute("vy"), out Matrix[4], out Matrix[7], out Matrix[10]);
