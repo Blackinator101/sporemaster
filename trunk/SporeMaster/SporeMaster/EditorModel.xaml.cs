@@ -66,7 +66,7 @@ namespace SporeMaster
         public void Save()
         {
         }
-        public void Search(string search_string)
+        public void Search(SearchSpec search_string)
         {
         }
         public string GetSelectedText()

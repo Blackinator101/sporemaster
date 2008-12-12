@@ -70,7 +70,7 @@ namespace SporeMaster
 
 
         void update() {
-            files.Search(FileSearch.Text);
+            files.Search( new SearchSpec(FileSearch.Text) );
             if (ShowRightOnly.IsChecked == true)
                 files.SearchRightPresent();
             DirTree.Data.ClearAll();
@@ -169,8 +169,7 @@ namespace SporeMaster
 
         void updateEditorSearch()
         {
-            string search = FileSearch.Text.ToLowerInvariant();
-            if (currentEditor != null) currentEditor.Search(search);
+            if (currentEditor != null) currentEditor.Search(new SearchSpec(FileSearch.Text));
         }
 
         void SelectedFile_Open_Click(object sender, RoutedEventArgs e)

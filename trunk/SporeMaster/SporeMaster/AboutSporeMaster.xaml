@@ -46,7 +46,8 @@
             <ListItem>
                 <Paragraph>
                     Full text indexing of .xml and .locale files in the unpacked package, to permit
-                    very fast incremental search.
+                    very fast incremental search.  <Span Foreground="Red">NEW:</Span>Search for multiple keywords
+                    separated by spaces.
                 </Paragraph>
             </ListItem>
             <ListItem>
@@ -58,6 +59,11 @@
             <ListItem>
                 <Paragraph>
                     Built in syntax highlighting editor.
+                </Paragraph>
+            </ListItem>
+            <ListItem>
+                <Paragraph>
+                    <Span Foreground="Red">NEW:</Span> Image and model viewers.
                 </Paragraph>
             </ListItem>
             <ListItem>
@@ -103,6 +109,12 @@
             <ListItem>
                 <Paragraph>
                     The external program WinMerge is by its authors, and can be found at SourceForge.net.
+                </Paragraph>
+            </ListItem>
+            <ListItem>
+                <Paragraph>
+                    The lines in the model viewer are drawn with the 3DTools for WPF package released by
+                    the Microsoft WPF team.
                 </Paragraph>
             </ListItem>
         </List>

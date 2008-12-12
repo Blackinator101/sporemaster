@@ -75,37 +75,46 @@ namespace SporeMaster
             Editor.BackColor = read_only ? System.Drawing.Color.LightGray : System.Drawing.Color.White;
         }
 
-        public void Search(string search)
+        public void Search(SearchSpec search)
         {
             Editor.Document.MarkerStrategy.RemoveAll(new Predicate<ICSharpCode.TextEditor.Document.TextMarker>(delegate { return true; }));
-            if (search != "" && Editor.Document.TextLength != 0)
+            if (Editor.Document.TextLength != 0)
             {
                 bool anyvisible = false;
+                int firstmatch = int.MaxValue;
                 string lower = Editor.Document.TextContent.ToLowerInvariant();
-                int pos = 0;
-                int firstmatch_row = -1, firstmatch_column = -1;
-                var view = Editor.ActiveTextAreaControl.TextArea.TextView;
-                int topRow = view.FirstVisibleLine;
-                int bottomRow = topRow + view.VisibleLineCount;
-                int leftColumn = Editor.ActiveTextAreaControl.HScrollBar.Value - Editor.ActiveTextAreaControl.HScrollBar.Minimum;
-                int rightColumn = leftColumn + view.VisibleColumnCount;
 
-                while ((pos = lower.IndexOf(search, pos)) != -1)
+                foreach (var word in search.require_all)
                 {
-                    Editor.Document.MarkerStrategy.AddMarker(new ICSharpCode.TextEditor.Document.TextMarker(
-                        pos, search.Length, ICSharpCode.TextEditor.Document.TextMarkerType.SolidBlock,
-                        System.Drawing.Color.Red, System.Drawing.Color.White));
-                    if (!anyvisible)
+                    int pos = 0;
+                    var view = Editor.ActiveTextAreaControl.TextArea.TextView;
+                    int topRow = view.FirstVisibleLine;
+                    int bottomRow = topRow + view.VisibleLineCount;
+                    int leftColumn = Editor.ActiveTextAreaControl.HScrollBar.Value - Editor.ActiveTextAreaControl.HScrollBar.Minimum;
+                    int rightColumn = leftColumn + view.VisibleColumnCount;
+
+                    while ((pos = lower.IndexOf(word.as_lower, pos)) != -1)
                     {
-                        int line = Editor.Document.GetLineNumberForOffset(pos);
-                        int col = pos - Editor.Document.GetLineSegmentForOffset(pos).Offset;
-                        if (firstmatch_row < 0) { firstmatch_row = line; firstmatch_column = col; }
-                        anyvisible = (line >= topRow && line < bottomRow && col >= leftColumn && col < rightColumn);
+                        Editor.Document.MarkerStrategy.AddMarker(new ICSharpCode.TextEditor.Document.TextMarker(
+                            pos, word.as_lower.Length, ICSharpCode.TextEditor.Document.TextMarkerType.SolidBlock,
+                            System.Drawing.Color.Red, System.Drawing.Color.White));
+                        firstmatch = Math.Min(firstmatch, pos);
+                        if (!anyvisible)
+                        {
+                            int line = Editor.Document.GetLineNumberForOffset(pos);
+                            int col = pos - Editor.Document.GetLineSegmentForOffset(pos).Offset;
+                            anyvisible = (line >= topRow && line < bottomRow && col >= leftColumn && col < rightColumn);
+                        }
+                        pos += word.as_lower.Length;
                     }
-                    pos += search.Length;
                 }
-                if (!anyvisible && firstmatch_row >= 0)
-                    Editor.ActiveTextAreaControl.ScrollTo(firstmatch_row, firstmatch_column);
+
+                if (!anyvisible && firstmatch != int.MaxValue)
+                {
+                    int line = Editor.Document.GetLineNumberForOffset(firstmatch);
+                    int col = firstmatch - Editor.Document.GetLineSegmentForOffset(firstmatch).Offset;
+                    Editor.ActiveTextAreaControl.ScrollTo(line, col);
+                }
             }
             Editor.Refresh();
         }

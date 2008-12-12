@@ -8,7 +8,7 @@ namespace SporeMaster
     interface IEditor
     {
         void Open(string path, bool read_only);
-        void Search(string search);
+        void Search(SearchSpec search);
         void Save();
         string GetSelectedText();
         

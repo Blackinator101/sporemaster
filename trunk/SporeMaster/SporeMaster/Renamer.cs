@@ -14,7 +14,7 @@ namespace SporeMaster
         {
             // TODO: do something with progress bar
             var nameBytes = from n in oldNames select Encoding.UTF8.GetBytes(n.ToLowerInvariant());
-            DirectoryTree.Tree.Search("");
+            DirectoryTree.Tree.Search( SearchSpec.all );
             var renamer = new Renamer
             {
                 oldNames = nameBytes.ToArray(),
@@ -25,7 +25,7 @@ namespace SporeMaster
 
             renamer.renameTree( DirectoryTree.Tree );
 
-            DirectoryTree.Tree.Search("");
+            DirectoryTree.Tree.Search(SearchSpec.all);
 
             if (renamer.errors.Count != 0)
             {

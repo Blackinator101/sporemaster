@@ -128,7 +128,7 @@ namespace SporeMaster
 
         bool IsHashUsed(UInt32 hash)
         {
-            return DirectoryTree.Tree.Search("#" + hash.ToString("X8"));
+            return DirectoryTree.Tree.Search( new SearchSpec("#" + hash.ToString("X8")) );
         }
 
         private void AliasNameStatusLink_Click(object sender, RoutedEventArgs e)
