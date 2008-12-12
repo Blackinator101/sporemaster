@@ -105,9 +105,20 @@ namespace SporeMaster
                     c.SearchRightPresent();
         }
 
-        public bool Search(string search)
+        void makeChildrenVisible()
         {
-            return SearchInternal(search.ToLowerInvariant(), Encoding.UTF8.GetBytes(search.ToLowerInvariant()));
+            visible = true;
+            if (children != null)
+                foreach (var c in children.Values)
+                    c.makeChildrenVisible();
+        }
+
+        public bool Search(SearchSpec search)
+        {
+            makeChildrenVisible();
+            foreach(var word in search.require_all)
+                SearchInternal(word);
+            return visible;
         }
         public bool LeftContains(byte[] bytes)
         {
@@ -117,14 +128,11 @@ namespace SporeMaster
         {
             return rightFullText != null && rightFullText.Contains(bytes);
         }
-        private bool SearchInternal( string search, byte[] bytes )
+        private bool SearchInternal( SearchSpec.Sequence seq )
         {
-            if (fullnamelower.Contains(search) || LeftContains(bytes) || RightContains(bytes))
+            if (!visible) return false;  //< optimization
+            if (fullnamelower.Contains(seq.as_lower) || LeftContains(seq.as_utf8) || RightContains(seq.as_utf8))
             {
-                visible = true;
-                if (children != null)
-                    foreach (var c in children.Values)
-                        c.SearchInternal("", bytes);
                 return true;
             }
             else
@@ -132,9 +140,9 @@ namespace SporeMaster
                 bool found = false;
                 if (children != null)
                     foreach (var c in children.Values)
-                        if (c.SearchInternal(search, bytes))
+                        if (c.SearchInternal(seq))
                             found = true;
-                visible = found;
+                if (!found) visible = false;
                 return found;
             }
         }
