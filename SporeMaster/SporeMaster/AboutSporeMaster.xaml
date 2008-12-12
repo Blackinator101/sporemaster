@@ -46,8 +46,8 @@
             <ListItem>
                 <Paragraph>
                     Full text indexing of .xml and .locale files in the unpacked package, to permit
-                    very fast incremental search.  <Span Foreground="Red">NEW:</Span>Search for multiple keywords
-                    separated by spaces.
+                    very fast incremental search.  <Span Foreground="Red">NEW:</Span>Search for keywords
+                    separated by spaces or "literal phrases".
                 </Paragraph>
             </ListItem>
             <ListItem>
