@@ -30,10 +30,35 @@ namespace SporeMaster
         public SearchSpec(string phrase)
         {
             require_all = (
-                from word in phrase.Split(' ')
+                from word in words(phrase)
                 where word != ""
                 select new Sequence(word)
                 ).ToArray();
+        }
+
+        IEnumerable<string> words(string phrase)
+        {
+            // Parse 'hello "hello world" world' into "hello", "hello world", "world"
+            var w = phrase.Split(' ');
+            for (int i = 0; i < w.Length;)
+                if (w[i].StartsWith("\""))
+                {
+                    string s = "";
+                    while (i < w.Length) {
+                        if (w[i].EndsWith("\"") && (w[i]!="\"" || s!="")) {
+                            s += w[i].Substring(0, w[i].Length-1);
+                            i++;
+                            break;
+                        } else {
+                            s += w[i];
+                            if (i+1 < w.Length) s += " ";
+                            i++;
+                        }
+                    }
+                    yield return s.Substring(1);
+                }
+                else
+                    yield return w[i++];
         }
     }
 }
