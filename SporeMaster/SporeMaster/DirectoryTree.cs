@@ -29,7 +29,7 @@ namespace SporeMaster
         {
             this.parent = parent;
             this.fullname = fullname;
-            this.fullnamelower = fullname.ToLower();
+            this.fullnamelower = fullname.ToLowerInvariant();
         }
 
         public string FullName { get { return fullname; } }
