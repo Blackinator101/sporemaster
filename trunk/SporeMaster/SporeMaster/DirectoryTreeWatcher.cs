@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
+using System.Windows.Threading;
 
 namespace SporeMaster
 {
@@ -42,6 +43,20 @@ namespace SporeMaster
             target.decPresent(side);
         }
 
+        private void getAll(DirectoryInfo dir, List<string> files, List<long> sizes)
+        {
+            foreach (var e in dir.GetFileSystemInfos())
+            {
+                if ((e.Attributes & FileAttributes.Directory) == FileAttributes.Directory)
+                    getAll((DirectoryInfo)e, files, sizes);
+                else
+                {
+                    files.Add(e.FullName);
+                    sizes.Add(((FileInfo)e).Length);
+                }
+            }
+        }
+
         private void init(PleaseWait progress)
         {
             fswatch = new FileSystemWatcher(path);
@@ -52,20 +67,20 @@ namespace SporeMaster
             fswatch.IncludeSubdirectories = true;
 
             if (progress != null) progress.beginTask(0.25, 1.0);
-            var files = Directory.GetFiles(path, "*.*", SearchOption.AllDirectories);
-            var sizes = new long[files.Length];
-            double total_size = 0.0;
-            for (int i = 0; i < files.Length; i++)
-            {
-                sizes[i] = (new System.IO.FileInfo(files[i])).Length;
-                total_size += sizes[i];
-            }
+
+            // Process files in random order, to make the progress bar more useful
+            // Getting file sizes is very slow in .NET :-(
+            var r = new Random();
+            var files = (from f in Directory.GetFiles(path, "*.*", SearchOption.AllDirectories)
+                         orderby r.Next()
+                         select f).ToArray();
+
             if (progress != null) progress.endTask();
-            if (progress != null) progress.beginTask(0.75, total_size + files.Length * 4096);
+            if (progress != null) progress.beginTask(0.75, files.Length);
 
             for(int i=0; i<files.Length; i++) {
                 updateFile(files[i].Substring(path.Length + 1), +1);
-                if (progress != null) progress.addProgress(sizes[i] + 4096);
+                if (progress != null) progress.addProgress(1);
             }
             if (Change != null)
                 thr_Change();
@@ -81,15 +96,15 @@ namespace SporeMaster
         private delegate void onFileRenamedDelegate(RenamedEventArgs e);
         private void thr_Change()
         {
-            disp.BeginInvoke(new changeDelegate(onChange));
+            disp.BeginInvoke(DispatcherPriority.Normal, new changeDelegate(onChange));
         }
         private void thr_onFileChanged(object source, FileSystemEventArgs e)
         {
-            disp.BeginInvoke(new onFileChangedDelegate(onFileChanged), e);
+            disp.BeginInvoke(DispatcherPriority.Normal, new onFileChangedDelegate(onFileChanged), e);
         }
         private void thr_onFileRenamed(object source, RenamedEventArgs e)
         {
-            disp.BeginInvoke(new onFileRenamedDelegate(onFileRenamed), e);
+            disp.BeginInvoke(DispatcherPriority.Normal, new onFileRenamedDelegate(onFileRenamed), e);
         }
         #endregion
 
