@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace SporeMaster
 {
@@ -56,7 +57,7 @@ namespace SporeMaster
 
         public void beginTask(double progressInCurrentTask, double progressMaximum)
         {
-            Dispatcher.BeginInvoke((SimpleDelegate)delegate
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, (SimpleDelegate)delegate
             {
                 double s = subTaskScale[subTaskScale.Count - 1];
                 subTaskScale.Add(s * progressInCurrentTask / progressMaximum);
@@ -66,7 +67,7 @@ namespace SporeMaster
 
         public void endTask()
         {
-            Dispatcher.BeginInvoke((SimpleDelegate)delegate
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, (SimpleDelegate)delegate
             {
                 int i = subTaskScale.Count - 1;
                 this.ProgressBar.Value = subTaskEnd[i];
@@ -77,7 +78,7 @@ namespace SporeMaster
 
         public void addProgress(double amount)
         {
-            Dispatcher.BeginInvoke((SimpleDelegate)delegate
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, (SimpleDelegate)delegate
             {
                 this.ProgressBar.Value += amount * this.subTaskScale[ subTaskScale.Count-1 ];
             });
@@ -89,7 +90,7 @@ namespace SporeMaster
 
         /*public void addMaximum(double max)
         {
-            Dispatcher.BeginInvoke( (SimpleDelegate)delegate
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal,  (SimpleDelegate)delegate
             {
                 this.ProgressBar.Maximum += max;
             });
@@ -97,7 +98,7 @@ namespace SporeMaster
 
         public void complete()
         {
-            Dispatcher.BeginInvoke((SimpleDelegate)delegate
+            Dispatcher.BeginInvoke(DispatcherPriority.Normal, (SimpleDelegate)delegate
             {
                 this.Close();
             });
