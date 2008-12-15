@@ -5,7 +5,7 @@
 		// FNV hash that EA loves to use :-)
 		public static uint FNV(this string input)
 		{
-			string lower = input.ToLower();
+			string lower = input.ToLowerInvariant();
 			uint rez = 0x811C9DC5;
 
 			for (int i = 0; i < lower.Length; i++)
