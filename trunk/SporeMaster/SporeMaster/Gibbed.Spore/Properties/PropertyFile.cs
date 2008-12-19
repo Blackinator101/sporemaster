@@ -273,7 +273,7 @@ namespace Gibbed.Spore.Properties
 
 					for (int i = 0; i < memories.Length; i++)
 					{
-						byte[] data = new byte[maxSize];
+						byte[] data = new byte[ array.Values[i] is ComplexProperty ? maxSize : memories[i].Length ];
 						memories[i].Seek(0, SeekOrigin.Begin);
 						memories[i].Read(data, 0, (int)(memories[i].Length));
 						output.Write(data, 0, data.Length);
