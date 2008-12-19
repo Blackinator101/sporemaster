@@ -8,7 +8,7 @@ using Gibbed.Spore.Helpers;
 
 namespace SporeMaster
 {
-    class NameRegistry
+    public class NameRegistry
     {
         private Dictionary<UInt32, String> hash_name = new Dictionary<UInt32,string>();
         private Dictionary<String, UInt32> name_hash = new Dictionary<string, UInt32>();
