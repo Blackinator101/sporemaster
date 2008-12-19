@@ -19,8 +19,8 @@ namespace Gibbed.Spore.Properties
 
 		public override void WriteProp(Stream output, bool array)
 		{
-			output.WriteS32BE(this.Value.Length);
 			byte[] data = Encoding.UTF8.GetBytes(this.Value);
+			output.WriteS32BE(data.Length);
 			output.Write(data, 0, data.Length);
 		}
 

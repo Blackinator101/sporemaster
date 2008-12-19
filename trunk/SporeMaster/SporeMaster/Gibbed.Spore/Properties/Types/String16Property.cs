@@ -13,14 +13,14 @@ namespace Gibbed.Spore.Properties
 		{
 			int length = input.ReadS32BE();
 			byte[] data = new byte[length * 2];
-			input.Read(data, 0, length * 2);
+			input.Read(data, 0, data.Length);
 			this.Value = Encoding.Unicode.GetString(data);
 		}
 
 		public override void WriteProp(Stream output, bool array)
 		{
-			output.WriteS32BE(this.Value.Length);
 			byte[] data = Encoding.Unicode.GetBytes(this.Value);
+			output.WriteS32BE(data.Length / 2);
 			output.Write(data, 0, data.Length);
 		}
 
