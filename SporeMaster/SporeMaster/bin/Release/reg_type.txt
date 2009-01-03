@@ -1,3 +1,6 @@
+trigger	0x024A0E52
+### Previous items are 'obsolete' ###
+txt	0x024A0E52
 prop	0x00B1B104
 gmdl	0x00E6BCE5
 plt	0x011989B7
@@ -7,7 +10,6 @@ vehicle_traits	0x01AD2418
 gmsh	0x01C135DA
 trait_pill	0x01C3C4B3
 css	0x0248F226
-trigger	0x024A0E52
 formation	0x02523258
 ttf	0x027C5CEF
 summary	0x02D5C9AF
@@ -35,7 +37,7 @@ bld	0x2399BE55
 vcl	0x24682294
 spui	0x250FE9A2
 gait	0x25DF0112
-txt	0x2B6CAB5F
+utxt	0x2B6CAB5F
 crt	0x2B978C46
 vp6	0x376840D7
 cfg	0x37979F71

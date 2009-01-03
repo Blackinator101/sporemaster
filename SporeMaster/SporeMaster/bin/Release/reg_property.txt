@@ -4009,3 +4009,4 @@ GalaxyPlanetImpostorRotationRate	0xFEE91D1C
 DateCivGameMultiplier	0xFF37BE52
 animRequiredBlocks	0xFF50F753
 cuteness	0xFF890A19
+nouns
